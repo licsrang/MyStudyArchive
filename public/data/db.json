@@ -1,6 +1,26 @@
 {
   "algorithms": [
     {
+      "id": "algo-1793090785938",
+      "title": "사다리 타기",
+      "platform": "CodeTree",
+      "problemNumber": "NEW",
+      "difficulty": "",
+      "tags": [
+        "구현",
+        "시뮬레이션",
+        "정렬"
+      ],
+      "timeComplexity": "O(N² + M log M)",
+      "spaceComplexity": "O(N² + M)",
+      "status": "Review",
+      "summary": "[문제 설명]\n사다리 타기 게임은 사람 수 N만큼 세로줄을 긋고, 위쪽에 1부터 N까지 숫자를 순서대로 적은 다음, 인접한 세로줄 사이에 가로줄 M개를 서로 겹치지 않게 긋는다. 각 숫자에서 아래로 내려가다가 가로줄을 만나면 인접한 세로줄로 이동하며, 마지막에 도착한 위치에 해당 숫자를 적는다.\n예시: N=4, M=6일 때 제공된 그림의 도착 결과는 3, 4, 1, 2이다.\n\n[제공 코드의 접근]\n가로줄을 높이 순으로 정렬하고, mem 배열로 각 세로줄에 위치한 사람을 추적한다. 가로줄마다 두 사람을 교환하고, del 배열로 동일한 사람 쌍의 교환 여부를 기록한다. 같은 쌍이 다시 교환되면 result에서 2를 차감한다.\n\n※ 사용자가 제공한 원본 코드이며, 온라인 채점 정답 여부는 확인하지 않았다.",
+      "keyPoint": "높이 순 정렬 → 인접 위치의 사람 교환 → 사람 쌍별 교환 여부 기록. mem은 현재 위치의 사람 번호, del은 사람 쌍의 교환 상태를 저장한다.",
+      "codeLanguage": "java",
+      "code": "import java.util.*;\n\npublic class Main {\n\tstatic int[] mem;\n\tstatic int m1, m2;\n\n\tpublic static void main(String[] args) {\n\t\tScanner sc = new Scanner(System.in);\n\t\tint n = sc.nextInt();\n\t\tint m = sc.nextInt();\n\t\tint result = m;\n\t\tmem = new int[n];\n\t\tList<int[]> list = new ArrayList<>();\n\t\tboolean[][] del = new boolean[n][n];\n\t\tfor (int i = 0; i < n; i++) {\n\t\t\tmem[i] = i;\n\t\t}\n\t\tfor (int i = 0; i < m; i++) {\n\t\t\tint a = sc.nextInt();\n\t\t\tint b = sc.nextInt();\n\t\t\tlist.add(new int[] { a, b });\n\t\t}\n\t\tlist.sort((o1, o2) -> o1[1] - o2[1]);\n\t\tfor (int[] data : list) {\n\t\t\tswap(data[0]);\n\t\t\tif (del[m1][m2]) {\n\t\t\t\tdel[m1][m2] = false;\n\t\t\t\tdel[m2][m1] = false;\n\t\t\t\tresult -= 2;\n\t\t\t} else {\n\t\t\t\tdel[m1][m2] = true;\n\t\t\t\tdel[m2][m1] = true;\n\t\t\t}\n\t\t}\n\t\tSystem.out.println(result);\n\t}\n\n\tstatic void swap(int n1) {\n\t\tm1 = mem[n1 - 1];\n\t\tm2 = mem[n1];\n\t\tmem[n1 - 1] = m2;\n\t\tmem[n1] = m1;\n\t}\n}",
+      "retrospective": "사용자 제공 코드 보관. 정답 여부 미확인."
+    },
+    {
       "id": "algo-1791251054296",
       "title": "KRUSKAL 알고리즘",
       "platform": "SSAFY 수업",
