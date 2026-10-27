@@ -44,8 +44,8 @@ import {
   Sun
 } from 'lucide-react';
 
-const REPO_OWNER = 'AshGray-Garlic';
-const REPO_NAME = 'my-study-archive';
+const REPO_OWNER = 'licsrang';
+const REPO_NAME = 'MyStudyArchive';
 const FILE_PATH = 'public/data/db.json';
 
 const DEFAULT_PLATFORMS = ['SWEA', 'Programmers', 'LeetCode', 'CodeTree'];
