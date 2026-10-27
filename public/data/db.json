@@ -1,0 +1,157 @@
+{
+  "algorithms": [
+    {
+      "id": "algo-1791251054296",
+      "title": "KRUSKAL 알고리즘",
+      "platform": "SSAFY 수업",
+      "problemNumber": "NEW",
+      "difficulty": "",
+      "tags": [
+        "KRUSKAL"
+      ],
+      "timeComplexity": "O(N)",
+      "spaceComplexity": "O(N)",
+      "status": "Solved",
+      "summary": "수업시간 코드 정리입니다.",
+      "keyPoint": "핵심 알고리즘 접근법",
+      "codeLanguage": "java",
+      "code": "import java.util.*;\nimport java.io.*;\n\npublic class Main {\n\tstatic class Edge implements Comparable<Edge> {\n\t\tint from;\n\t\tint to;\n\t\tint weight;\n\t\tEdge(int from, int to, int weight) {\n\t\t\tsuper();\n\t\t\tthis.from = from;\n\t\t\tthis.to = to;\n\t\t\tthis.weight = weight;\n\t\t}\n\t\t@Override\n\t\tpublic int compareTo(Edge o) {\n\t\t\treturn this.weight - o.weight;\t//가중치 기준 오름차순\n\t\t}\n\t}\n\tstatic void makeSets() {\n\t\tfor(int i = 0; i < V; i++) {\n\t\t\tparents[i] = i;\n\t\t}\n\t}\n\tstatic int find(int a) {\t\t\t// a가 속한 집합의 대표자 리턴\n\t\tif(a == parents[a])\n\t\t\treturn a;\n\t\treturn parents[a] = find(parents[a]);\t// pass compression\n\t}\n\tstatic boolean union(int a, int b) {\t// a, b가 속한 집합 합치기 (union에 성공하면 True, 실패하면 False 반환)\n\t\tint aRoot = find(a);\n\t\tint bRoot = find(b);\n\t\tif(aRoot == bRoot)\n\t\t\treturn false;\n\t\tparents[bRoot] = aRoot;\n\t\treturn true;\n\t}\n\tstatic Edge[] edgeList;\n\tstatic int[] parents;\n\tstatic int V, E;\n\tpublic static void main(String[] args) throws IOException {\n\t\tBufferedReader br = new BufferedReader(new InputStreamReader(System.in));\n\t\tStringTokenizer st = new StringTokenizer(br.readLine());\n\t\tV = Integer.parseInt(st.nextToken());\n\t\tE = Integer.parseInt(st.nextToken());\n\t\tparents = new int[V];\n\t\tedgeList = new Edge[E];\n\t\tfor(int i = 0; i < E; i++) {\n\t\t\tst = new StringTokenizer(br.readLine());\n\t\t\tedgeList[i] = new Edge(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()));\n\t\t}\t// 간선리스트 생성\n\t\tArrays.sort(edgeList);\n\t\tmakeSets();\t\t// 모든 정점을 루트로 하는 트리로 만듬\n\t\tint result = 0;\t// MST 비용\n\t\tint cnt = 0;\t// 사용된 간선 수\n\t\tfor(Edge edge : edgeList) {\n\t\t\tif(union(edge.from, edge.to)) {\n\t\t\t\tcnt++;\n\t\t\t\tresult += edge.weight;\n\t\t\t\tif(cnt == V - 1)\n\t\t\t\t\tbreak;\n\t\t\t}\n\t\t}\n\t\tSystem.out.println(result);\n\t}\n}",
+      "retrospective": "학습 기록"
+    },
+    {
+      "id": "algo-1790416401146",
+      "title": "16546. Baby-gin_실습",
+      "platform": "SWEA",
+      "problemNumber": "NEW",
+      "difficulty": "D2",
+      "tags": [
+        "D2",
+        "구현"
+      ],
+      "timeComplexity": "O(N)",
+      "spaceComplexity": "O(N)",
+      "status": "Solved",
+      "summary": "숫자가 총 6개가 나오므로 3개 이상 나오는 경우는 트리플렛밖에 존재 하지 않는다\n따라서 count가 3을 넘어가면 총 숫자 count에서 3을 빼주고 해당 숫자 count에서도 3을 빼준다\ncount가 0일 경우 트리플렛만 존재하기 때문에 true\ncount가 0이 아닐 경우에는 run 검사를 진행하고 run 검사 결과에 따라 출력한다. ",
+      "keyPoint": "핵심 알고리즘 접근법",
+      "codeLanguage": "java",
+      "code": "import java.util.*;\nimport java.io.*;\n\nclass Solution {\n\tstatic int N;\n\n\tpublic static void main(String args[]) throws Exception {\n\t\tBufferedReader br = new BufferedReader(new InputStreamReader(System.in));\n\t\tint T = Integer.parseInt(br.readLine().trim());\n\t\tfor (int test_case = 1; test_case <= T; test_case++) {\n\t\t\tint[] count = new int[10];\n\t\t\tint mod = 0;\n\t\t\tString str = br.readLine();\n\t\t\tint idx = 0;\n\t\t\tfor (int i = 0; i < 6; i++) {\n\t\t\t\tidx = str.charAt(i) - '0';\n\t\t\t\tcount[idx]++;\n\t\t\t\tmod++;\n\t\t\t\tif (count[idx] == 3) {\n\t\t\t\t\tcount[idx] = 0;\n\t\t\t\t\tmod -= 3;\n\t\t\t\t}\n\t\t\t}\n\t\t\tboolean result = true;\n\t\t\tif (mod != 0) {\n\t\t\t\tresult = false;\n\t\t\t\tfor (int i = 1; i < 9; i++) {\n\t\t\t\t\tif (count[i - 1] == count[i] && count[i] == count[i + 1] && count[i] != 0) {\n\t\t\t\t\t\tresult = true;\n\t\t\t\t\t\tbreak;\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t\tSystem.out.println(\"#\" + test_case + \" \" + result);\n\t\t}\n\t}\n}",
+      "retrospective": "학습 기록"
+    },
+    {
+      "id": "algo-1790268354600",
+      "title": "7532. 세영이의 SEM력 연도",
+      "platform": "SWEA",
+      "problemNumber": "NEW",
+      "difficulty": "D3",
+      "tags": [
+        "D3",
+        "구현"
+      ],
+      "timeComplexity": "O(N)",
+      "spaceComplexity": "O(N)",
+      "status": "Solved",
+      "summary": "365로 나누었을 때 S만큼 남는 연도만 돌면서 계산을 진행 하였습니다.\n24*29번 데이터들이 반복 될 것이기 때문에 for문에서 24*29번만 검사를 진행 했습니다.\nS만큼 남는 연도들 중 E와 M을 만족하는 값을 찾았을 경우 for문을 탈출합니다.\n\n※주의사항 : E와 M의 경우 24와 29로 나눴을때 나머지로 계산을 진행 하는데 문제에서는 0~23이 아닌 1~24의 값을 사용하므로 입력 받을 때 %를 이용하여 값을 입력받으면 정확한 계산이 가능해집니다.",
+      "keyPoint": "핵심 알고리즘 접근법",
+      "codeLanguage": "java",
+      "code": "import java.io.*;\nimport java.util.*;\n\npublic class Solution {\n\tpublic static void main(String[] args) throws IOException {\n\t\tBufferedReader br = new BufferedReader(new InputStreamReader(System.in));\n\t\tStringBuilder sb = new StringBuilder();\n\t\tint T = Integer.parseInt(br.readLine().trim());\n\t\tfor (int test_case = 1; test_case <= T; test_case++) {\n\t\t\tStringTokenizer st = new StringTokenizer(br.readLine());\n\t\t\tint result = Integer.parseInt(st.nextToken());\n\t\t\tint e = Integer.parseInt(st.nextToken()) % 24;\n\t\t\tint m = Integer.parseInt(st.nextToken()) % 29;\n\t\t\tfor (int i = 0; i < 24 * 29; i++) {\n\t\t\t\tif (result % 24 == e && result % 29 == m)\n\t\t\t\t\tbreak;\n\t\t\t\tresult += 365;\n\t\t\t}\n\t\t\tSystem.out.println(\"#\" + test_case + \" \" + result);\n\t\t}\n\t}\n}",
+      "retrospective": "학습 기록"
+    },
+    {
+      "id": "algo-1790064950185",
+      "title": "6782. 현주가 좋아하는 제곱근 놀이",
+      "platform": "SWEA",
+      "problemNumber": "NEW",
+      "difficulty": "D3",
+      "tags": [
+        "구현",
+        "D3"
+      ],
+      "timeComplexity": "O(N)",
+      "spaceComplexity": "O(N)",
+      "status": "Solved",
+      "summary": "첫 풀이 후 문제점\n1. cal() 메소드의 시간복잡도 : O(n)\n2. while문 내에 int tmp 를 사용 하여 범위적으로 제한을 받음",
+      "keyPoint": "핵심 알고리즘 접근법",
+      "codeLanguage": "java",
+      "code": "import java.io.*;\nimport java.util.*;\n\npublic class Solution {\n\tstatic long n;\n\tpublic static void main(String[] args) throws IOException {\n\t\tBufferedReader br = new BufferedReader(new InputStreamReader(System.in));\n\t\tStringBuilder sb = new StringBuilder();\n\t\tint T = Integer.parseInt(br.readLine().trim());\n\t\tfor (int test_case = 1; test_case <= T; test_case++) {\n\t\t\tn = Long.parseLong(br.readLine().trim());\n\t\t\tint count = 0;\n\t\t\twhile(n != 2) {\n\t\t\t\tlong tmp = cal();\n\t\t\t\tcount += tmp * tmp - n + 1;\n\t\t\t\tn = tmp;\n\t\t\t}\n\t\t\tSystem.out.println(\"#\" + test_case + \" \" + count);\n\t\t}\n\t}\n\tstatic long cal() {\n\t\tlong tmp = (int)Math.sqrt(n);\n\t\tif(tmp * tmp >= n)\n\t\t\treturn tmp;\n\t\telse\n\t\t\treturn tmp + 1;\n\t}\n}",
+      "retrospective": "새로 추가된 학습 기록"
+    }
+  ],
+  "certifications": [],
+  "certNotes": [],
+  "csTopics": [
+    {
+      "id": "cs-1790644810789",
+      "domain": "운영체제(OS)",
+      "title": "도커(Docker)",
+      "importance": "High (★ 4.0)",
+      "concept": "도커는 애플리케이션과 그 실행에 필요한 라이브러리, 환경 설정 등을 하나의 이미지로 묶어서 어떤 환경에서도 동일하게 실행할 수 있도록 해주는 컨테이너 기반 가상화 플랫폼입니다.\n기존의 가상 머신(VM)은 하이퍼바이저 위에 게스트 OS를 통째로 올려서 실행하기 때문에 무겁고 부팅 속도도 느린 반면, 도커의 컨테이너는 호스트 OS의 커널을 공유하면서 프로세스 단위로 격리된 실행 환경만 제공하기 때문에 훨씬 가볍고 실행 속도도 빠릅니다.\n개발자는 Dockerfile에 필요한 환경과 설치 과정을 코드로 작성해 이미지를 만들고, 이 이미지를 통해 개발 환경과 운영 환경의 차이로 발생하는 문제를 줄일 수 있습니다.\n또한 컨테이너 단위로 애플리케이션을 배포하기 때문에 서버를 확장하거나 여러 환경에 동일하게 배포하기 쉽고, CI/CD 파이프라인과 함께 사용하면 빌드부터 배포까지 자동화하기에도 유리합니다.\n다만 컨테이너는 호스트 OS의 커널을 공유하기 때문에 VM에 비해 격리 수준이 낮아 보안 측면에서 더 신경 써야 하고, 컨테이너 개수가 많아지면 컨테이너 간 통신이나 오케스트레이션을 관리하기 위해 쿠버네티스 같은 도구가 함께 필요해진다는 특징도 있습니다.\n\n다른유형 → 도커 이미지와 컨테이너의 차이, 쿠버네티스와의 관계 등이 꼬리 질문으로 출제\n\n주로 어떤 기업에서 출제될까?\n25년(하) : 카카오, LIG넥스원\n25년(상) 코스콤, 롯데이노베이트, 현대오토에버, LS ITC, 한화시스템, 신한SDS 등",
+      "interviewQA": [
+        {
+          "q": "도커(Docker)의 핵심 원리는 무엇인가요?",
+          "a": "상세 답변 내용"
+        }
+      ]
+    },
+    {
+      "id": "cs-1790269855214",
+      "domain": "소프트웨어 공학",
+      "title": "CI/CD",
+      "importance": "High (★ 4.0)",
+      "concept": "CI는 여러 개발자가 작성한 코드를 자주 공유 저장소에 병합하고, 병합할 때마다 자동으로 빌드와 테스트를 수행해 코드 변경으로 인한 오류를 빠르게 발견하는 과정입니다.\nCD는 CI를 통과한 코드를 자동으로 배포 환경까지 반영하는 과정으로, Continuous Delivery는 배포 직전 단계까지 자동화하고 최종 배포는 사람이 승인하는 방식이고, Continuous Deployment는 승인 과정 없이 운영 환경까지 자동으로 배포하는 방식이라는 차이가 있습니다.\n보통 Jenkins. GitLab CI, GitHub Actions 같은 도구를 활용해 파이프라인을 구성하며, 코드가 저장소에 푸쉬되면 자동으로 빌드·테스트·배포 단계가 순차적으로 실행되도록 설계합니다.\nCI/CD를 도입하면 문제를 조기에 발견할 수 있고, 배포 과정이 자동화되어 사람이 수동으로 배포할 때 발생하는 실수를 줄일 수 있으며, 배포 주기가 짧아져 서비스 개선 사항을 빠르게 반영할 수 있다는 장점이 있습니다.\n다만 파이프라인을 잘못 설계하면 오히려 빌드 시간이 길어지거나, 테스트 커버리지와의 배포 전략(블루/그린, 카나리 배포 등)을 함께 고려하는 것이 중요합니다.\n\n다른 유형 → 배포전략 비교, 파이프라인 구축 경험 등이 꼬리 질문으로 출제되고 있습니다.\n\n주로 어떤 기업에서 출제 될까?\n26년(상) : 레인보우로보틱스, HL만도, 현대오토에버(반복출제)\n25년(하) : DB inc., 안랩\n25년(상) : 네이버, LG전자, 삼성SDS 등",
+      "interviewQA": [
+        {
+          "q": "CI/CD의 핵심 원리는 무엇인가요?",
+          "a": "상세 답변 내용"
+        }
+      ]
+    },
+    {
+      "id": "cs-1790131088944",
+      "domain": "운영체제(OS)",
+      "title": "동기/비동기",
+      "importance": "High (★ 4.0)",
+      "concept": "동기와 비동기는 작업을 처리하는 방식과 순서에 차이가 있는 개념입니다.\n동기 방식은 요청을 보낸 후 그 작업이 끝날 때까지 다음 작업을 진행하지 않고 기다리는 방식입니다.\n즉. 요청과 응답이 순차적으로 이루어지기 때문에 코드의 흐름을 이해하기 쉽고 결과를 예측하기 편하지만, 응답이 오래 걸리는 작업이 있으면 그동안 다른 작업을 처리하지 못해 전체 성능이 떨어질 수 있습니다.\n반면 비동기 방식은 요청을 보낸 후 응답을 기다리지 않고 바로 다음 작업을 수행하며, 요청한 작업이 완료되면 콜백 함수나 프로미스. 이벤트 등을 통해 결과를 나중에 전달 받는 방식입니다.\n이 방식은 여러 작업을 동시에 처리할 수 있어 시스템 자원을 효율적으로 사용할 수 있고, 응답 속도가 느린 외부 API 호출이나 대용량 데이터 처리에 유리합니다. 다만 코드의 실행 순서가 작성한 순서와 다르게 동작할 수 있어 흐름을 추적하기 어렵고, 여러 비동기 작업이 얽히면 예외 처리가 복잡해질 수 있다는 단점이 있습니다. 그래서 사용자 요청을 즉시 처리해야 하거나 여러 작업을 병렬로 처리해야 하는 경우에는 비동기 방식을, 작업 순서가 명확히 보장되어야 하는 경우에는 동기 방식을 사용하는 것이 적절합니다.\n\n다른 유형 → 본인 프로젝트에서 비동기를 적용한 경험, 대용량 데이터를 비동기로 처리할 때 발생하는 문제와 해결 방법등이 함께 출제\n\n주로 어떤 기업에서 출제될까?\n25년(하) : 비바리퍼블리카(토스), 삼성SDS, 신세계 I&C\n25년(상) : 코스콤, 현대오토에버, 삼성전자DX, 에스코어",
+      "interviewQA": [
+        {
+          "q": "동기/비동기의 핵심 원리는 무엇인가요?",
+          "a": "상세 답변 내용"
+        }
+      ]
+    },
+    {
+      "id": "cs-1790122451401",
+      "domain": "JAVA",
+      "title": "JVM",
+      "importance": "High (★ 4.0)",
+      "concept": "자바로 작성된 프로그램을 운영체제와 상관없이 실행할 수 있게 해주는 가상 머신입니다.\n자바 컴파일러는 소스 코드를 바이트코드(.class 파일)로 변환하는데, 이 바이트코드는 특정 운영체제에 종속되지 않고 JVM만 설치되어 있으면 어떤 환경에서도 동일하게 실행될 수 있습니다.\n이러한 특징 덕분에 \"한 번 작성하면 어디서든 실행 가능하다\"는 자바의 대표적인 장점이 가능해집니다.\nJVM은 크게 클래스 로더, 실행 엔진, 런타임 데이터 영역으로 구성됩니다.\n클래스 로더는 컴파일된 바이트코드를 JVM 내부로 불러오는 역할을 하고, 런타임 데이터 영역은 메서드 영역, 힙, 스택,  PC 레지스터 등으로 나뉘어 프로그램 실행에 필요한 데이터를 관리합니다.\n실행 엔진은 바이트 코드를 실제 기계어로 해석하거나 컴파일해서 실행하는데, 인터프리터 방식과 JIT(Just-In-Time) 컴파일러 방식을 함께 사용해 성능을 높입니다.\n또한 JVM은 힙 영역에 생성된 객체 중 더 이상 참조되지 않는 객체를 자동으로 탐지해 메모리에서 해제하는 가비지 컬렉션(GC) 기능을 제공해, 개발자가 메모리 관리를 직접 하지 않아도 되도록 도와줍니다.\n\n다른 유형 → JIT컴파일러와 인터프리터의 차이, JVM 메모리 구조(힙·스택·메서드 영역) 각각의 역할 등이 출제되었습니다.\n\n주로 어떤 기업에서 출제될까?\n26년(상) : 코스콤, BNK경남은행\n25년(하) : 비씨카드\n25년(상) : SOOP(구 아프리카 TV), 아이티센, IM뱅크",
+      "interviewQA": [
+        {
+          "q": "JVM의 핵심 원리는 무엇인가요?",
+          "a": "상세 답변 내용"
+        }
+      ]
+    }
+  ],
+  "languages": [],
+  "platforms": [
+    "SWEA",
+    "Programmers",
+    "CodeTree",
+    "SDS",
+    "SSAFY 수업"
+  ],
+  "events": [
+    {
+      "id": "evt-1790132290855",
+      "date": "2026-09-28",
+      "title": "SSAFY 주간평가",
+      "category": "시험/코테"
+    },
+    {
+      "id": "evt-1790132295030",
+      "date": "2026-09-28",
+      "title": "SSAFY 월말평가",
+      "category": "시험/코테"
+    }
+  ]
+}
